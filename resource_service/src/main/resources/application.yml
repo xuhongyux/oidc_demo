@@ -1,0 +1,60 @@
+server:
+  port: 8081
+
+logging:
+  level:
+    root: DEBUG
+
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          okta:
+            authorization-uri: https://dev-50350041.okta.com/oauth2/v1/authorize
+            token-uri: https://dev-50350041.okta.com/oauth2/v1/token
+            user-info-uri: https://dev-50350041.okta.com/oauth2/v1/userinfo
+            user-name-attribute: name
+            jwk-set-uri: https://dev-50350041.okta.com/oauth2/v1/keys
+
+          github:
+            user-name-attribute: login
+
+#          prx:
+#            #  获取访问令牌
+#            token-uri: http://localhost:8080/oauth/token
+#            authorization-uri: http://localhost:8080/oauth/authorize
+#            user-info-uri: http://localhost:8080/oauth/userinfo
+#            user-name-attribute: username
+
+
+          prx:
+            #  获取访问令牌
+            token-uri: http://localhost:8088/oauth/token
+            authorization-uri: http://localhost:8088/oauth/authorize
+            user-info-uri: http://localhost:8088/oauth/userinfo
+            user-name-attribute: username
+
+
+        registration:
+          github:
+            client-id: Iv1.5b96cc3da91a7457
+            client-secret: 96a0eee37e8048ae6a5b4d27b5d38a2d720bc65b
+
+          prx:
+            client-id: client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            client-name: proxverse_oauth2
+            scope: "login"
+            redirect-uri: "http://192.168.1.110:8081/login/oauth2/code/prx"
+
+          okta:
+            client-id: 0oa8jp0qmnMGgQhFW5d7
+            client-secret: yH6jC0lm-9XKa3-KZSTwAvdNO7kIB8JyyQwVg3Bj
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            ## redirect-uri: "http://localhost:8081/login"
+            scope: "openid, profile, email, address, phone, offline_access"
+            client-name: okta
