@@ -1,6 +1,16 @@
 server:
-  port: 8088
+  port: 8080
+
+
+  servlet:
+    session:
+      cookie:
+        name: oidcCookie
 
 logging:
   level:
     root: DEBUG
+
+
+
+

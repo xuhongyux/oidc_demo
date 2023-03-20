@@ -23,6 +23,7 @@
     <modules>
         <module>resource_service</module>
         <module>authorize_service</module>
+        <module>authorize_service_jdbc</module>
     </modules>
 
     <dependencies>
@@ -36,6 +37,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

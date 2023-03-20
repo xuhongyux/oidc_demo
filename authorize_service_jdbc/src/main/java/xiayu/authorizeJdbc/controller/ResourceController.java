@@ -1,4 +1,4 @@
-package com.xiayu.authorize.controller;
+package xiayu.authorizeJdbc.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ResourceController {
 
     @GetMapping("/oauth/userinfo")
-    public UserInfoRes user(){
+    public CustomerUserDetails user(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return new UserInfoRes(authentication.getName(),  authentication.toString());
+        CustomerUserDetails principal = (CustomerUserDetails) authentication.getPrincipal();
+        return principal;
     }
 }

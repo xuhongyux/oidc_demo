@@ -1,13 +1,21 @@
-package com.xiayu.authorize.config;
+package xiayu.authorizeJdbc.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+
+import javax.sql.DataSource;
 
 /**
  * @author xuhongyu
@@ -21,6 +29,19 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Bean
+    @Primary
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource dataSource() {
+        // 配置数据源（注意，使用的是 HikariCP 连接池），以上注解是指定数据源，否则会有冲突
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean
+    public ClientDetailsService jdbcClientDetails() {
+        return new JdbcClientDetailsService(dataSource());
+    }
+
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -31,17 +52,7 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-
-        clients.inMemory()
-                //客户端唯一标识（client_id）
-                .withClient("client")
-                //客户端的密码(client_secret)，这里的密码应该是加密后的
-                .secret(passwordEncoder.encode("secret"))
-                //授权模式标识
-                .authorizedGrantTypes("authorization_code")
-                //作用域
-                .scopes("openid", "login")
-                //回调地址
-                .redirectUris("http://localhost:8081/login/oauth2/code/local");
+        // 配置客户端
+        clients.withClientDetails(jdbcClientDetails());
     }
 }

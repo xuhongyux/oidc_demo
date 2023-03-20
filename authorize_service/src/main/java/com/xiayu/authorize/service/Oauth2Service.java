@@ -1,4 +1,4 @@
-package com.xiayu.authorize.controller;
+package com.xiayu.authorize.service;
 
 import com.xiayu.authorize.config.DefaultOidcIdTokenValidatorFactory;
 import org.apache.tomcat.util.buf.StringUtils;
@@ -36,11 +36,11 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -64,14 +64,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-
 /**
  * @author xuhongyu
- * @create 2022-04-25 2:38 下午
+ * @create 2023-03-10 17:37
  */
 
-@RestController
-public class Oauth2Controller {
+@Service
+public class Oauth2Service {
+
 
     private final Map<String, JwtDecoder> jwtDecoders = new ConcurrentHashMap<>();
 
@@ -120,6 +120,8 @@ public class Oauth2Controller {
 
 
     private String redirectUri = "http://localhost:8081/oauth2/v1/authorize";
+
+
 
 
 
